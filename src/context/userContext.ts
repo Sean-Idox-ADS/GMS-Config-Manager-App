@@ -1,7 +1,7 @@
 // region header
 //--------------------------------------------------------------------------------------------------
 //
-//  Description: Index file
+//  Description: user Context
 //
 //  Copyright:    © 2025 Idox Software Limited.
 //
@@ -17,21 +17,14 @@
 //--------------------------------------------------------------------------------------------------
 // endregion header
 
+// region imports
+
 import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import UserContextType from "../models/userContextType";
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+// endregion imports
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const UserContext = React.createContext<UserContextType>({} as UserContextType);
+UserContext.displayName = "userContext";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+export default UserContext;
