@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 // region Version 1.0.0.0
 //    001   12.03.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   13.03.25 Sean Flook          GMSCM-1 Added code to handle when a users token has expired.
 // endregion Version 1.0.0.0
 //
 //--------------------------------------------------------------------------------------------------
@@ -65,6 +66,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ open, variant, onDone, onClose })
   const [organisations, setOrganisations] = useState<string[]>([]);
 
   const [organisationNameError, setOrganisationNameError] = useState<string | undefined>(undefined);
+  const [tokenExpired, setTokenExpired] = useState<boolean>(false);
 
   /**
    * Event to handle when the dialog is closing.
@@ -227,7 +229,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ open, variant, onDone, onClose })
 
   useEffect(() => {
     const getOrganisations = async (): Promise<string[] | undefined> => {
-      const orgs = await Organisations(userContext.currentToken, setOrganisationNameError);
+      const orgs = await Organisations(userContext.currentToken, setOrganisationNameError, setTokenExpired);
       return orgs;
     };
     switch (variant) {
@@ -255,6 +257,13 @@ const AddDialog: React.FC<AddDialogProps> = ({ open, variant, onDone, onClose })
   useEffect(() => {
     setShowDialog(open);
   }, [open]);
+
+  useEffect(() => {
+    if (tokenExpired) {
+      userContext.logoff();
+      setTokenExpired(false);
+    }
+  }, [tokenExpired, userContext]);
 
   return (
     <Dialog open={showDialog} aria-labelledby="edit-lookup-dialog" fullWidth maxWidth="sm" onClose={handleDialogClose}>
