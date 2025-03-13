@@ -1,0 +1,42 @@
+[
+  {
+    "organisation": "geoplaceenglish",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "ehdc",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "dorset2",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "dual",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "dualstaging",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "geoplaceenglishstaging",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "north yorkshire council",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "idox",
+    "cluster": "testcluster1"
+  },
+  {
+    "organisation": "scottish",
+    "cluster": "testcluster2"
+  },
+  {
+    "organisation": "scottishstaging",
+    "cluster": "testcluster2"
+  }
+]

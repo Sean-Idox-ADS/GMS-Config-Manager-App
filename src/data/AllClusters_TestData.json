@@ -1,0 +1,36 @@
+[
+  {
+    "clusterName": "testcluster1",
+    "apis": [
+      {
+        "apiName": "iManage",
+        "apiUrl": "https://symphony-imanage-geoplace.azurewebsites.net"
+      },
+      {
+        "apiName": "Settings",
+        "apiUrl": "https://symphony-imanage-settings.azurewebsites.net"
+      },
+      {
+        "apiName": "Lookups",
+        "apiUrl": "https://symphony-imanage-lookups.azurewebsites.net"
+      }
+    ]
+  },
+  {
+    "clusterName": "testcluster2",
+    "apis": [
+      {
+        "apiName": "iManage",
+        "apiUrl": "https://symphony-imanage-onescotland.azurewebsites.net"
+      },
+      {
+        "apiName": "Settings",
+        "apiUrl": "https://symphony-imanage-settings.azurewebsites.net"
+      },
+      {
+        "apiName": "Lookups",
+        "apiUrl": "https://symphony-imanage-lookups.azurewebsites.net"
+      }
+    ]
+  }
+]

@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Set the isAdministrator & isSuperAdministrator property for the user.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -19,7 +20,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 
-import UserContext from "../context/userContext";
+import UserContext from "../context/UserContext";
 
 import {
   Button,
@@ -199,6 +200,8 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, title, message, chang
               const newCurrentUser: CurrentUserType = {
                 ...whoAmIRes,
                 displayName: `${whoAmIRes.firstName} ${whoAmIRes.lastName}`,
+                isAdministrator: whoAmIRes.rights.includes("Administrator"),
+                isSuperAdministrator: whoAmIRes.rights.includes("SuperAdministrator"),
               };
               userContext.updateCurrentUser(newCurrentUser);
             } else {

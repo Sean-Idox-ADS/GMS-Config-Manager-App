@@ -1,0 +1,116 @@
+[
+  {
+    "id": "63d851c9-15a7-4a41-82ce-ae967a97ef1f",
+    "configType": "MTConfig",
+    "version": 1,
+    "name": "IManageTest",
+    "created": "2024-01-31T09:00:00Z",
+    "lastUpdated": "2024-01-31T09:00:00Z",
+    "createdBy": "Peter Bryden",
+    "lastUpdatedBy": "Peter Bryden",
+    "organisations": [
+      {
+        "organisationName": "IDOX1",
+        "symphonyConnectionString": "Server=51.141.4.152,1433; Database= TEST_ENG_R; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "test_eng_r",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "IDOX1_old",
+        "symphonyConnectionString": "Server=51.141.4.152,1433; Database= BS7666_Wirral; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_wirral",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "IDOX2",
+        "symphonyConnectionString": "Server=51.141.4.152,1433; Database= BS7666_DORSET; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_dorset",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "IDOX3",
+        "symphonyConnectionString": "Server=51.141.4.152,1433; Database= BS7666_BCC; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_bcc",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "oldScottish",
+        "symphonyConnectionString": "Server=Server=51.141.4.152,1433; Database=TRAIN_SCO_R_DEV; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "train_sco_r_dev",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "Scottish",
+        "symphonyConnectionString": "Server=51.141.4.152,1433; Database= TRAIN_SCO_R_DEV; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "train_sco_r_dev",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      }
+    ]
+  },
+  {
+    "id": "f0998f89-a26f-4c35-a875-4cdccdcbe682",
+    "configType": "MTConfig",
+    "version": 1,
+    "name": "IManageTest_Paula",
+    "created": "2024-01-31T09:00:00Z",
+    "lastUpdated": "2024-01-31T09:00:00Z",
+    "createdBy": "Paula Dormer",
+    "lastUpdatedBy": "Paula Dormer",
+    "organisations": [
+      {
+        "organisationName": "GeoplaceEnglish",
+        "symphonyConnectionString": "Server=LT-2VVN7G3; Database=TEST_ENG_R; User ID=iManageWebServiceUser; Password=Base$TEST1; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "test_eng_r",
+        "elasticNodes": ["http://127.0.0.1:9200/"]
+      },
+      {
+        "organisationName": "Sutton",
+        "symphonyConnectionString": "Server=symdemo-sql2022.ukwest.cloudapp.azure.com; Database=BS7666_LBSUTTON; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_lbsutton",
+        "elasticNodes": ["http://10.0.1.9:9200/"]
+      },
+      {
+        "organisationName": "Dorset2",
+        "symphonyConnectionString": "Server=LT-2VVN7G3; Database=BS7666_DORSET; User ID=iManageWebServiceUser; Password=Base$TEST1; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_dorset",
+        "elasticNodes": ["http://127.0.0.1:9200/"]
+      },
+      {
+        "organisationName": "Dual",
+        "symphonyConnectionString": "Server=LT-2VVN7G3; Database=TRAIN_1_R; User ID=iManageWebServiceUser; Password=Base$TEST1; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "train_1_r",
+        "elasticNodes": ["http://127.0.0.1:9200/"]
+      },
+      {
+        "organisationName": "Scottish",
+        "symphonyConnectionString": "Server=LT-2VVN7G3; Database=BS7666_PKC; User ID=iManageWebServiceUser; Password=Base$TEST1; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_pkc",
+        "elasticNodes": ["http://127.0.0.1:9200/"]
+      },
+      {
+        "organisationName": "ScottishStaging",
+        "symphonyConnectionString": "Server=symdemo-sql2022.ukwest.cloudapp.azure.com; Database=train_sco_staging; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "train_sco_staging",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "DualStaging",
+        "symphonyConnectionString": "Server=symdemo-sql2022.ukwest.cloudapp.azure.com; Database=train_1_r_staging; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "train_1_r_staging",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "GeoplaceEnglishStaging",
+        "symphonyConnectionString": "Server=symdemo-sql2022.ukwest.cloudapp.azure.com; Database=test_eng_staging; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "test_eng_staging",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      },
+      {
+        "organisationName": "North Yorkshire Council",
+        "symphonyConnectionString": "Server=symdemo-sql2022.ukwest.cloudapp.azure.com; Database=BS7666_NYC; User ID=iManageWebServiceUser; Password=3r9Y-g!d7-6e2B; Trusted_Connection=false; MultipleActiveResultSets=true; Trust Server Certificate=true;",
+        "elasticAlias": "bs7666_nyc",
+        "elasticNodes": ["http://20.254.160.82:9200/"]
+      }
+    ]
+  }
+]

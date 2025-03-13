@@ -1,7 +1,7 @@
 // region header
 //--------------------------------------------------------------------------------------------------
 //
-//  Description: user Context
+//  Description: API Grid Type
 //
 //  Copyright:    © 2025 Idox Software Limited.
 //
@@ -11,20 +11,14 @@
 //
 //  Version Date     Modifier             Issue# Description
 // region Version 1.0.0.0
-//    001   20.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    001   12.03.25 Sean Flook          GMSCM-1 Initial Revision.
 // endregion Version 1.0.0.0
 //
 //--------------------------------------------------------------------------------------------------
 // endregion header
 
-// region imports
-
-import React from "react";
-import UserContextType from "../models/userContextType";
-
-// endregion imports
-
-const UserContext = React.createContext<UserContextType>({} as UserContextType);
-UserContext.displayName = "userContext";
-
-export default UserContext;
+export default interface ApiGridType {
+  id: number;
+  name: string;
+  url: string;
+}

@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Fixed the display of the end adornment.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -243,6 +244,8 @@ const ADSTextControl: React.FC<ADSTextControlProps> = ({
                     htmlInput: {
                       maxLength: `${maxLength}`,
                       ref: inputRef,
+                    },
+                    input: {
                       endAdornment: !isEdgeChromium && (
                         <InputAdornment position="end">
                           <IconButton
@@ -321,6 +324,8 @@ const ADSTextControl: React.FC<ADSTextControlProps> = ({
                 htmlInput: {
                   maxLength: `${maxLength}`,
                   ref: inputRef,
+                },
+                input: {
                   endAdornment: !isEdgeChromium && (
                     <InputAdornment position="end">
                       <IconButton
@@ -328,11 +333,7 @@ const ADSTextControl: React.FC<ADSTextControlProps> = ({
                         onClick={handleShowPasswordClick}
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
-                        sx={{
-                          "&:hover": {
-                            color: adsBlueA,
-                          },
-                        }}
+                        sx={{ "&:hover": { color: adsBlueA } }}
                       >
                         {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                       </IconButton>

@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 // region Version 1.0.0.0
 //    001   20.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Code required for managing the configuration and cluster documents.
 // endregion Version 1.0.0.0
 //
 //--------------------------------------------------------------------------------------------------
@@ -19,13 +20,15 @@
 
 import { ReactElement, useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import UserContext from "./context/userContext";
+import UserContext from "./context/UserContext";
 
 import { hasLoginExpired, loginStorageName } from "./utils/HelperUtils";
 
-import HomePage from "./pages/HomePage";
+import DocumentsPage from "./pages/DocumentsPage";
+import ClusterPage from "./pages/ClusterPage";
 
-export const HomeRoute = "/";
+export const DocumentsRoute = "/documents";
+export const ClusterRoute = "/cluster";
 
 const PageRouting = (): ReactElement => {
   const userContext = useContext(UserContext);
@@ -36,7 +39,7 @@ const PageRouting = (): ReactElement => {
       if (storedLogin) {
         const savedLogin = JSON.parse(storedLogin);
         if (savedLogin.expiry && hasLoginExpired(savedLogin.expiry)) {
-          userContext.updateShowLogin(true);
+          userContext.onExpired();
         } else {
           userContext.onReload();
         }
@@ -46,7 +49,8 @@ const PageRouting = (): ReactElement => {
 
   return userContext.currentUser ? (
     <Routes>
-      <Route path="*" element={<HomePage />} />
+      <Route path={ClusterRoute} element={<ClusterPage />} />
+      <Route path="*" element={<DocumentsPage />} />
     </Routes>
   ) : (
     <></>

@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Added id.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -107,6 +108,7 @@ const ADSHelpDrawer: React.FC<ADSHelpDrawerProps> = ({ open, handleDrawerClose }
                 Help and support
               </Typography>
               <ADSActionButton
+                id="helper-close-button"
                 variant={ADSActionButtonVariant.close}
                 tooltipTitle="Close help"
                 tooltipPlacement="left"

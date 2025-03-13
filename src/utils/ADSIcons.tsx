@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   24.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Added StartToEndIcon and EndToStartIcon.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ import { SvgIcon } from "@mui/material";
  * Method to get the copy icon.
  *
  * @param {object} props The passed in properties.
- * @returns {JSX.Element} The copy icon.
+ * @returns {ReactElement} The copy icon.
  */
 export function CopyIcon(props: any): ReactElement {
   return (
@@ -38,7 +39,7 @@ export function CopyIcon(props: any): ReactElement {
  * Method to get the move icon.
  *
  * @param {object} props The passed in properties.
- * @returns {JSX.Element} The move icon.
+ * @returns {ReactElement} The move icon.
  */
 export function MoveIcon(props: any): ReactElement {
   return (
@@ -46,6 +47,34 @@ export function MoveIcon(props: any): ReactElement {
       <g>
         <path d="M18.586,20.015L15,20.015L15,22.015L22,22.015L22,15L20,15L20,18.601L16.732,15.333L15.318,16.747L18.586,20.015ZM5.429,20L9.015,20L9.015,22L2.015,22L2.015,14.985L4.015,14.985L4.015,18.586L7.283,15.318L8.697,16.732L5.429,20ZM11.98,7.96C14.199,7.96 16,9.761 16,11.98C16,14.199 14.199,16 11.98,16C9.761,16 7.96,14.199 7.96,11.98C7.96,9.761 9.761,7.96 11.98,7.96ZM18.586,4L15,4L15,2L22,2L22,9.015L20,9.015L20,5.414L16.732,8.682L15.318,7.268L18.586,4ZM5.429,4L9.015,4L9.015,2L2.015,2L2.015,9.015L4.015,9.015L4.015,5.414L7.283,8.682L8.697,7.268L5.429,4Z" />
       </g>
+    </SvgIcon>
+  );
+}
+
+/**
+ * Method to get the start to end icon.
+ *
+ * @param {object} props The passed in properties.
+ * @returns {ReactElement} The start to end icon.
+ */
+export function StartToEndIcon(props: any): ReactElement {
+  return (
+    <SvgIcon {...props}>
+      <path d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z" />
+    </SvgIcon>
+  );
+}
+
+/**
+ * Method to get the end to start icon.
+ *
+ * @param {object} props The passed in properties.
+ * @returns {ReactElement} The end to start icon.
+ */
+export function EndToStartIcon(props: any): ReactElement {
+  return (
+    <SvgIcon {...props}>
+      <path d="M9,19l1.41-1.41L5.83,13H22V11H5.83l4.59-4.59L9,5l-7,7L9,19z" />
     </SvgIcon>
   );
 }

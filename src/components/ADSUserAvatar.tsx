@@ -12,14 +12,17 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Code required for managing the configuration and cluster documents.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
 //#endregion header */
 
-import React, { Fragment, ReactElement, useContext, useState } from "react";
+import React, { Fragment, ReactElement, useContext, useEffect, useState } from "react";
 
-import UserContext from "../context/userContext";
+import UserContext from "../context/UserContext";
+import ConfigContext from "../context/ConfigContext";
+import ClusterContext from "../context/ClusterContext";
 
 import { GetUserName, StringToColour } from "../utils/HelperUtils";
 
@@ -35,12 +38,16 @@ import PasswordIcon from "@mui/icons-material/Password";
 import { useTheme } from "@mui/material/styles";
 import LoginDialog from "../dialogs/LoginDialog";
 
-interface ADSUserAvatarProps {}
+interface ADSUserAvatarProps {
+  onSaveChanges: (type: string) => void;
+}
 
-const ADSUserAvatar: React.FC<ADSUserAvatarProps> = () => {
+const ADSUserAvatar: React.FC<ADSUserAvatarProps> = ({ onSaveChanges }) => {
   const theme = useTheme();
 
   const userContext = useContext(UserContext);
+  const configContext = useContext(ConfigContext);
+  const clusterContext = useContext(ClusterContext);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const settingsOpen = Boolean(anchorEl);
@@ -120,7 +127,13 @@ const ADSUserAvatar: React.FC<ADSUserAvatarProps> = () => {
    */
   const handleAvatarClick = () => {
     if (userContext.currentUser) {
-      setAnchorEl(document.getElementById("gms-configuration-manager-user-settings") as HTMLButtonElement);
+      if (configContext.documentChanged) {
+        onSaveChanges("user_configuration");
+      } else if (clusterContext.clusterChanged) {
+        onSaveChanges("user_cluster");
+      } else {
+        setAnchorEl(document.getElementById("gms-configuration-manager-user-settings") as HTMLButtonElement);
+      }
     }
   };
 
@@ -204,6 +217,13 @@ const ADSUserAvatar: React.FC<ADSUserAvatarProps> = () => {
       )}
     </Stack>
   );
+
+  useEffect(() => {
+    if (userContext.displayDialog) {
+      setAnchorEl(document.getElementById("gms-configuration-manager-user-settings") as HTMLButtonElement);
+      userContext.onDisplayDialog(false);
+    }
+  }, [userContext]);
 
   return (
     <>

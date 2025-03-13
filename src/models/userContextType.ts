@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   25.02.25 Sean Flook          GMSCM-1 Make the reload parameter for logoff not required.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -29,7 +30,9 @@ export default interface UserContextType {
   showAuthenticate: boolean;
   userError: string | undefined;
   loginDetails: AuthenticateDto | undefined;
-  logoff(reload: boolean): void;
+  showMessages: boolean;
+  displayDialog: boolean;
+  logoff(reload?: boolean): void;
   updateUserError(newUserError: string | undefined): void;
   updateLoginDetails(newLoginDetails: AuthenticateDto | undefined): void;
   updateCurrentUser(newCurrentUser: CurrentUserType | undefined): void;
@@ -39,4 +42,5 @@ export default interface UserContextType {
   updateUseAuthenticate(newUseAuthenticate: boolean): void;
   onExpired(): void;
   onReload(): void;
+  onDisplayDialog(display: boolean): void;
 }

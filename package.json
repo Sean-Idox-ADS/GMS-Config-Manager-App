@@ -10,6 +10,8 @@
     "@mui/material": "^6.4.5",
     "@mui/styles": "^6.4.5",
     "@mui/types": "^7.2.21",
+    "@mui/x-data-grid": "^7.27.1",
+    "@mui/x-tree-view": "^7.26.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

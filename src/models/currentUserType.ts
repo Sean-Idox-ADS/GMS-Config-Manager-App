@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Added isAdministrator and isSuperAdministrator.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -36,4 +37,6 @@ export default interface CurrentUserType {
   created: string;
   lastUpdated: string;
   displayName: string;
+  isAdministrator: boolean;
+  isSuperAdministrator: boolean;
 }

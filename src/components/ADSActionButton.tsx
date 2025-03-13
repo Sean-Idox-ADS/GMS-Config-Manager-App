@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 //region Version 1.0.0.0
 //    001   24.02.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   12.03.25 Sean Flook          GMSCM-1 Added cancel icon as well as adding id.
 //endregion Version 1.0.0.0
 //
 //--------------------------------------------------------------------------------------------------
@@ -23,6 +24,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PreviousIcon from "@mui/icons-material/ChevronLeft";
 import NextIcon from "@mui/icons-material/ChevronRight";
 import SaveIcon from "@mui/icons-material/SaveOutlined";
+import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/ArrowBack";
@@ -60,6 +62,7 @@ export enum ADSActionButtonVariant {
   "previous",
   "return",
   "save",
+  "cancel",
   "settings",
   "user",
   "users",
@@ -67,6 +70,7 @@ export enum ADSActionButtonVariant {
 }
 
 interface ADSActionButtonProps {
+  id: string;
   variant: ADSActionButtonVariant;
   buttonLabel?: string;
   disabled?: boolean;
@@ -91,6 +95,7 @@ interface ADSActionButtonProps {
 }
 
 const ADSActionButton: React.FC<ADSActionButtonProps> = ({
+  id,
   variant,
   buttonLabel,
   disabled,
@@ -148,84 +153,88 @@ const ADSActionButton: React.FC<ADSActionButtonProps> = ({
 
     switch (variant) {
       case ADSActionButtonVariant.previous:
-        iconComp = <PreviousIcon />;
+        iconComp = <PreviousIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.next:
-        iconComp = <NextIcon />;
+        iconComp = <NextIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.save:
-        iconComp = <SaveIcon />;
+        iconComp = <SaveIcon id={id} />;
+        break;
+
+      case ADSActionButtonVariant.cancel:
+        iconComp = <CancelIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.delete:
-        iconComp = <DeleteIcon />;
+        iconComp = <DeleteIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.deleteForever:
-        iconComp = <DeleteForeverOutlinedIcon />;
+        iconComp = <DeleteForeverOutlinedIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.return:
       case ADSActionButtonVariant.home:
-        iconComp = <HomeIcon />;
+        iconComp = <HomeIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.close:
-        iconComp = <CloseIcon />;
+        iconComp = <CloseIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.copy:
-        iconComp = <CopyIcon />;
+        iconComp = <CopyIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.move:
-        iconComp = <MoveIcon />;
+        iconComp = <MoveIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.moveDown:
-        iconComp = <ExpandMoreIcon />;
+        iconComp = <ExpandMoreIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.moveUp:
-        iconComp = <ExpandLessIcon />;
+        iconComp = <ExpandLessIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.user:
-        iconComp = <PersonOutlineIcon />;
+        iconComp = <PersonOutlineIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.settings:
-        iconComp = <SettingsOutlinedIcon />;
+        iconComp = <SettingsOutlinedIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.logout:
-        iconComp = <LogoutIcon />;
+        iconComp = <LogoutIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.users:
-        iconComp = <PeopleOutlineIcon />;
+        iconComp = <PeopleOutlineIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.import:
-        iconComp = <FileUploadOutlinedIcon />;
+        iconComp = <FileUploadOutlinedIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.export:
-        iconComp = <FileDownloadOutlinedIcon />;
+        iconComp = <FileDownloadOutlinedIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.edit:
-        iconComp = <EditIcon />;
+        iconComp = <EditIcon id={id} />;
         break;
 
       case ADSActionButtonVariant.password:
-        iconComp = <PasswordIcon />;
+        iconComp = <PasswordIcon id={id} />;
         break;
 
       default:
-        iconComp = <AddCircleOutlineIcon />;
+        iconComp = <AddCircleOutlineIcon id={id} />;
         break;
     }
 
