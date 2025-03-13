@@ -12,6 +12,7 @@
 //  Version Date     Modifier             Issue# Description
 // region Version 1.0.0.0
 //    001   12.03.25 Sean Flook          GMSCM-1 Initial Revision.
+//    002   13.03.25 Sean Flook          GMSCM-1 Added code to handle when a users token has expired.
 // endregion Version 1.0.0.0
 //
 //--------------------------------------------------------------------------------------------------
@@ -68,6 +69,8 @@ const ClusterPage: React.FC<ClusterPageProps> = () => {
   const [enableSave, setEnableSave] = useState<boolean>(false);
   const [haveErrors, setHaveErrors] = useState<boolean>(false);
   const [errorIds, setErrorIds] = useState<string[]>([]);
+
+  const [tokenExpired, setTokenExpired] = useState<boolean>(false);
 
   const [openAddDialog, setOpenAddDialog] = useState<boolean>(false);
   const [openConformation, setOpenConformation] = useState<boolean>(false);
@@ -265,7 +268,13 @@ const ClusterPage: React.FC<ClusterPageProps> = () => {
               organisations: currentCluster.organisations,
             };
 
-            result = await PostMultiTenantCluster(userContext.currentToken, newClusterData, "new", setClusterError);
+            result = await PostMultiTenantCluster(
+              userContext.currentToken,
+              newClusterData,
+              "new",
+              setClusterError,
+              setTokenExpired
+            );
 
             if (!!result) {
               clusterContext.onNewClusterAdded(false);
@@ -285,7 +294,8 @@ const ClusterPage: React.FC<ClusterPageProps> = () => {
               userContext.currentToken,
               updatedClusterData,
               currentCluster.id,
-              setClusterError
+              setClusterError,
+              setTokenExpired
             );
           }
 
@@ -549,7 +559,8 @@ const ClusterPage: React.FC<ClusterPageProps> = () => {
 
         const rawClusterData: MultiTenantClusterGetDto[] | undefined = await GetMultiTenantCluster(
           userContext.currentToken,
-          setErrorText
+          setErrorText,
+          setTokenExpired
         );
 
         if (rawClusterData) {
@@ -597,6 +608,13 @@ const ClusterPage: React.FC<ClusterPageProps> = () => {
   useEffect(() => {
     setClusterError(clusterContext.validationErrors);
   }, [clusterContext.validationErrors]);
+
+  useEffect(() => {
+    if (tokenExpired) {
+      userContext.logoff();
+      setTokenExpired(false);
+    }
+  }, [tokenExpired, userContext]);
 
   return isLoading ? (
     <div>

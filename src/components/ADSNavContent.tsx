@@ -13,6 +13,7 @@
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
 //    002   12.03.25 Sean Flook          GMSCM-1 Code required for managing the configuration and cluster documents.
+//    003   13.03.25 Sean Flook          GMSCM-1 Added code to handle when a users token has expired.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -78,6 +79,8 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
 
   const [configError, setConfigError] = useState<ConfigErrorType[] | undefined>(undefined);
   const [clusterError, setClusterError] = useState<ClusterErrorType[] | undefined>(undefined);
+
+  const [tokenExpired, setTokenExpired] = useState<boolean>(false);
 
   const currentType = useRef<string | null>(null);
 
@@ -159,10 +162,21 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
                 }),
               };
 
-              result = await PostMultiTenantConfig(userContext.currentToken, newConfigData, "new", setConfigError);
+              result = await PostMultiTenantConfig(
+                userContext.currentToken,
+                newConfigData,
+                "new",
+                setConfigError,
+                setTokenExpired
+              );
 
               if (!!result) {
                 configContext.onNewConfigAdded();
+              } else {
+                if (tokenExpired) {
+                  userContext.logoff();
+                  setTokenExpired(false);
+                }
               }
             } else {
               const updatedConfigData: MultiTenantConfigPutDto = {
@@ -184,7 +198,8 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
                 userContext.currentToken,
                 updatedConfigData,
                 currentDocument.id,
-                setConfigError
+                setConfigError,
+                setTokenExpired
               );
             }
 
@@ -198,7 +213,10 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
                 userContext.onDisplayDialog(true);
               }
             } else {
-              if (configError) {
+              if (tokenExpired) {
+                userContext.logoff();
+                setTokenExpired(false);
+              } else if (configError) {
                 configContext.onSetValidationErrors(configError);
               }
             }
@@ -232,10 +250,21 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
                 organisations: currentCluster.organisations,
               };
 
-              result = await PostMultiTenantCluster(userContext.currentToken, newClusterData, "new", setClusterError);
+              result = await PostMultiTenantCluster(
+                userContext.currentToken,
+                newClusterData,
+                "new",
+                setClusterError,
+                setTokenExpired
+              );
 
               if (!!result) {
                 clusterContext.onNewClusterAdded(false);
+              } else {
+                if (tokenExpired) {
+                  userContext.logoff();
+                  setTokenExpired(false);
+                }
               }
             } else {
               const updatedClusterData: MultiTenantClusterPutDto = {
@@ -252,7 +281,8 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
                 userContext.currentToken,
                 updatedClusterData,
                 currentCluster.id,
-                setClusterError
+                setClusterError,
+                setTokenExpired
               );
             }
 
@@ -266,7 +296,10 @@ const ADSNavContent: React.FC<ADSNavContentProps> = () => {
                 userContext.onDisplayDialog(true);
               }
             } else {
-              if (clusterError) {
+              if (tokenExpired) {
+                userContext.logoff();
+                setTokenExpired(false);
+              } else if (clusterError) {
                 clusterContext.onSetValidationErrors(clusterError);
               }
             }

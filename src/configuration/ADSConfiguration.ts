@@ -13,6 +13,7 @@
 // region Version 1.0.0.0
 //    001   20.02.25 Sean Flook          GMSCM-1 Initial Revision.
 //    002   12.03.25 Sean Flook          GMSCM-1 Code required for managing the configuration and cluster documents.
+//    003   13.03.25 Sean Flook          GMSCM-1 Added code to handle when a users token has expired.
 // endregion Version 1.0.0.0
 //
 //--------------------------------------------------------------------------------------------------
@@ -482,7 +483,8 @@ export async function UpdateMyPassword(
  */
 export async function GetMultiTenantConfig(
   userToken: string | undefined,
-  errorHandler: (error: string) => void
+  errorHandler: (error: string) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<MultiTenantConfigGetDto[] | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -495,10 +497,30 @@ export async function GetMultiTenantConfig(
       },
     });
 
-    const response = await multiTenantService.get<MultiTenantConfigGetDto[]>("/MultiTenantConfig");
+    const response = await multiTenantService
+      .get<MultiTenantConfigGetDto[]>("/MultiTenantConfig")
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
+          } else {
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] GetMultiTenantConfig", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler && errorHandler(`[ERROR ${error.response.status}]: ${error.response.data}`);
+            } else {
+              errorHandler && errorHandler("An unknown error occurred, please report to support.");
+            }
+          }
+        }
+        return undefined;
+      });
 
-    return response.data;
+    return response;
   } else {
+    unauthorizedHandler && unauthorizedHandler(true);
     errorHandler && errorHandler("Token is invalid");
     return undefined;
   }
@@ -516,7 +538,8 @@ export async function PostMultiTenantConfig(
   userToken: string | undefined,
   config: MultiTenantConfigPostDto,
   id: string,
-  errorHandler: (error: ConfigErrorType[] | undefined) => void
+  errorHandler: (error: ConfigErrorType[] | undefined) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<MultiTenantConfigGetDto | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -542,31 +565,35 @@ export async function PostMultiTenantConfig(
       .then((response) => {
         if (response.status === 201) return response.data;
         else {
-          errorHandler && errorHandler([{ id: id, field: "", errors: ["A no content error was received."] }]);
+          errorHandler && errorHandler([{ id: id, field: "name", errors: ["A no content error was received."] }]);
           return undefined;
         }
       })
       .catch((error) => {
         if (error.response) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("[DEBUG] PostMultiTenantConfig", `[ERROR ${error.response.status}]: ${error.response.data}`);
-            errorHandler &&
-              errorHandler([
-                {
-                  id: id,
-                  field: "organisationName",
-                  errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
-                },
-              ]);
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
           } else {
-            errorHandler &&
-              errorHandler([
-                {
-                  id: id,
-                  field: "organisationName",
-                  errors: ["An error has occurred whilst adding a new configuration."],
-                },
-              ]);
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] PostMultiTenantConfig", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler &&
+                errorHandler([
+                  {
+                    id: id,
+                    field: "name",
+                    errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
+                  },
+                ]);
+            } else {
+              errorHandler &&
+                errorHandler([
+                  {
+                    id: id,
+                    field: "name",
+                    errors: ["An error has occurred whilst adding a new configuration."],
+                  },
+                ]);
+            }
           }
         }
         return undefined;
@@ -574,7 +601,8 @@ export async function PostMultiTenantConfig(
 
     return response;
   } else {
-    errorHandler && errorHandler([{ id: id, field: "organisationName", errors: ["Token is invalid"] }]);
+    unauthorizedHandler && unauthorizedHandler(true);
+    errorHandler && errorHandler([{ id: id, field: "name", errors: ["Token is invalid"] }]);
     return undefined;
   }
 }
@@ -591,7 +619,8 @@ export async function PutMultiTenantConfig(
   userToken: string | undefined,
   config: MultiTenantConfigPutDto,
   id: string,
-  errorHandler: (error: ConfigErrorType[] | undefined) => void
+  errorHandler: (error: ConfigErrorType[] | undefined) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<MultiTenantConfigGetDto | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -617,32 +646,35 @@ export async function PutMultiTenantConfig(
       .then((response) => {
         if (response.status === 200) return response.data;
         else {
-          errorHandler &&
-            errorHandler([{ id: id, field: "organisationName", errors: ["A no content error was received."] }]);
+          errorHandler && errorHandler([{ id: id, field: "name", errors: ["A no content error was received."] }]);
           return undefined;
         }
       })
       .catch((error) => {
         if (error.response) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("[DEBUG] PutMultiTenantConfig", `[ERROR ${error.response.status}]: ${error.response.data}`);
-            errorHandler &&
-              errorHandler([
-                {
-                  id: id,
-                  field: "organisationName",
-                  errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
-                },
-              ]);
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
           } else {
-            errorHandler &&
-              errorHandler([
-                {
-                  id: id,
-                  field: "organisationName",
-                  errors: ["An error has occurred whilst updating a configuration."],
-                },
-              ]);
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] PutMultiTenantConfig", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler &&
+                errorHandler([
+                  {
+                    id: id,
+                    field: "name",
+                    errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
+                  },
+                ]);
+            } else {
+              errorHandler &&
+                errorHandler([
+                  {
+                    id: id,
+                    field: "name",
+                    errors: ["An error has occurred whilst updating a configuration."],
+                  },
+                ]);
+            }
           }
         }
         return undefined;
@@ -650,7 +682,8 @@ export async function PutMultiTenantConfig(
 
     return response;
   } else {
-    errorHandler && errorHandler([{ id: id, field: "organisationName", errors: ["Token is invalid"] }]);
+    unauthorizedHandler && unauthorizedHandler(true);
+    errorHandler && errorHandler([{ id: id, field: "name", errors: ["Token is invalid"] }]);
     return undefined;
   }
 }
@@ -664,7 +697,8 @@ export async function PutMultiTenantConfig(
  */
 export async function GetMultiTenantCluster(
   userToken: string | undefined,
-  errorHandler: (error: string) => void
+  errorHandler: (error: string) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<MultiTenantClusterGetDto[] | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -677,10 +711,30 @@ export async function GetMultiTenantCluster(
       },
     });
 
-    const response = await multiTenantService.get<MultiTenantClusterGetDto[]>("/MultiTenantCluster");
+    const response = await multiTenantService
+      .get<MultiTenantClusterGetDto[]>("/MultiTenantCluster")
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
+          } else {
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] GetMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler && errorHandler(`[ERROR ${error.response.status}]: ${error.response.data}`);
+            } else {
+              errorHandler && errorHandler("An unknown error occurred, please report to support.");
+            }
+          }
+        }
+        return undefined;
+      });
 
-    return response.data;
+    return response;
   } else {
+    unauthorizedHandler && unauthorizedHandler(true);
     errorHandler && errorHandler("Token is invalid");
     return undefined;
   }
@@ -698,7 +752,8 @@ export async function PostMultiTenantCluster(
   userToken: string | undefined,
   cluster: MultiTenantClusterPostDto,
   id: string,
-  errorHandler: (error: ClusterErrorType[] | undefined) => void
+  errorHandler: (error: ClusterErrorType[] | undefined) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<MultiTenantClusterGetDto | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -727,19 +782,25 @@ export async function PostMultiTenantCluster(
       })
       .catch((error) => {
         if (error.response) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("[DEBUG] PostMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
-            errorHandler &&
-              errorHandler([
-                {
-                  id: id,
-                  field: "name",
-                  errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
-                },
-              ]);
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
           } else {
-            errorHandler &&
-              errorHandler([{ id: id, field: "name", errors: ["An error has occurred whilst adding a new cluster."] }]);
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] PostMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler &&
+                errorHandler([
+                  {
+                    id: id,
+                    field: "name",
+                    errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
+                  },
+                ]);
+            } else {
+              errorHandler &&
+                errorHandler([
+                  { id: id, field: "name", errors: ["An error has occurred whilst adding a new cluster."] },
+                ]);
+            }
           }
         }
         return undefined;
@@ -747,6 +808,7 @@ export async function PostMultiTenantCluster(
 
     return response;
   } else {
+    unauthorizedHandler && unauthorizedHandler(true);
     errorHandler && errorHandler([{ id: id, field: "name", errors: ["Token is invalid"] }]);
     return undefined;
   }
@@ -764,7 +826,8 @@ export async function PutMultiTenantCluster(
   userToken: string | undefined,
   cluster: MultiTenantClusterPutDto,
   id: string,
-  errorHandler: (error: ClusterErrorType[] | undefined) => void
+  errorHandler: (error: ClusterErrorType[] | undefined) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<MultiTenantClusterGetDto | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -793,19 +856,23 @@ export async function PutMultiTenantCluster(
       })
       .catch((error) => {
         if (error.response) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("[DEBUG] PostMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
-            errorHandler &&
-              errorHandler([
-                {
-                  id: id,
-                  field: "name",
-                  errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
-                },
-              ]);
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
           } else {
-            errorHandler &&
-              errorHandler([{ id: id, field: "name", errors: ["An error has occurred whilst updating a cluster."] }]);
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] PostMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler &&
+                errorHandler([
+                  {
+                    id: id,
+                    field: "name",
+                    errors: [`[ERROR ${error.response.status}]: ${error.response.data}`],
+                  },
+                ]);
+            } else {
+              errorHandler &&
+                errorHandler([{ id: id, field: "name", errors: ["An error has occurred whilst updating a cluster."] }]);
+            }
           }
         }
         return undefined;
@@ -813,6 +880,7 @@ export async function PutMultiTenantCluster(
 
     return response;
   } else {
+    unauthorizedHandler && unauthorizedHandler(true);
     errorHandler && errorHandler([{ id: id, field: "name", errors: ["Token is invalid"] }]);
     return undefined;
   }
@@ -827,7 +895,8 @@ export async function PutMultiTenantCluster(
  */
 export async function Organisations(
   userToken: string | undefined,
-  errorHandler: (error: string) => void
+  errorHandler: (error: string) => void,
+  unauthorizedHandler: (unauthorized: boolean) => void
 ): Promise<string[] | undefined> {
   if (userToken) {
     getConfigInfo();
@@ -852,11 +921,15 @@ export async function Organisations(
       })
       .catch((error) => {
         if (error.response) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("[DEBUG] PostMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
-            errorHandler && errorHandler(`[ERROR ${error.response.status}]: ${error.response.data}`);
+          if (error.response.status === 401) {
+            unauthorizedHandler && unauthorizedHandler(true);
           } else {
-            errorHandler && errorHandler("An error has occurred whilst updating a cluster.");
+            if (process.env.NODE_ENV === "development") {
+              console.log("[DEBUG] PostMultiTenantCluster", `[ERROR ${error.response.status}]: ${error.response.data}`);
+              errorHandler && errorHandler(`[ERROR ${error.response.status}]: ${error.response.data}`);
+            } else {
+              errorHandler && errorHandler("An error has occurred whilst updating a cluster.");
+            }
           }
         }
         return undefined;
@@ -864,6 +937,7 @@ export async function Organisations(
 
     return response;
   } else {
+    unauthorizedHandler && unauthorizedHandler(true);
     errorHandler && errorHandler("Token is invalid");
     return undefined;
   }

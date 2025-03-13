@@ -13,6 +13,7 @@
 //#region Version 1.0.0.0 changes
 //    001   21.02.25 Sean Flook          GMSCM-1 Initial Revision.
 //    002   25.02.25 Sean Flook          GMSCM-1 Added code to display the data.
+//    003   13.03.25 Sean Flook          GMSCM-1 Added code to handle when a users token has expired.
 //#endregion Version 1.0.0.0 changes
 //
 //--------------------------------------------------------------------------------------------------
@@ -83,6 +84,8 @@ const DocumentsPage: React.FC<DocumentsPageProps> = () => {
   const [openConformation, setOpenConformation] = useState<boolean>(false);
   const [haveErrors, setHaveErrors] = useState<boolean>(false);
   const [errorIds, setErrorIds] = useState<string[]>([]);
+
+  const [tokenExpired, setTokenExpired] = useState<boolean>(false);
 
   /**
    * Method to get the configuration data.
@@ -711,7 +714,13 @@ const DocumentsPage: React.FC<DocumentsPageProps> = () => {
               }),
             };
 
-            result = await PostMultiTenantConfig(userContext.currentToken, newConfigData, "new", setConfigError);
+            result = await PostMultiTenantConfig(
+              userContext.currentToken,
+              newConfigData,
+              "new",
+              setConfigError,
+              setTokenExpired
+            );
 
             if (!!result) {
               configContext.onNewConfigAdded();
@@ -736,7 +745,8 @@ const DocumentsPage: React.FC<DocumentsPageProps> = () => {
               userContext.currentToken,
               updatedConfigData,
               currentDocument.id,
-              setConfigError
+              setConfigError,
+              setTokenExpired
             );
           }
 
@@ -976,7 +986,8 @@ const DocumentsPage: React.FC<DocumentsPageProps> = () => {
 
         const rawData: MultiTenantConfigGetDto[] | undefined = await GetMultiTenantConfig(
           userContext.currentToken,
-          setErrorText
+          setErrorText,
+          setTokenExpired
         );
 
         if (rawData) {
@@ -1072,6 +1083,13 @@ const DocumentsPage: React.FC<DocumentsPageProps> = () => {
   useEffect(() => {
     setConfigError(configContext.validationErrors);
   }, [configContext.validationErrors]);
+
+  useEffect(() => {
+    if (tokenExpired) {
+      userContext.logoff();
+      setTokenExpired(false);
+    }
+  }, [tokenExpired, userContext]);
 
   return isLoading ? (
     <div>
